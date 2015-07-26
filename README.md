@@ -30,13 +30,13 @@ Directory Index requires PHP 5.3+ to work properly.  For more information on PHP
 Installation
 ------------
 
-  * Upload `index.php` to the folder you want listed. That's all!
+  * Upload `src/index.php` to the folder you want listed. That's all!
   
   * For more settings:
-     * copy index.php or execute generate.php with the destination in argument and rename index.php.dist in index.php.
+     * copy src/index.php or execute src/generate.php with the destination in argument and rename index.php.dist in index.php.
         
         ex:        
-        php genrate.php /var/www/mysite
+        php src/generate.php /var/www/mysite
      
      * Edit the new index.php and change values in Setting class
      * Upload `index.php` to the folder you want listed.
