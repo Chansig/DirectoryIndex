@@ -24,8 +24,7 @@ Features
 Requirements
 ------------
 
-Directory Index requires PHP 5.3+ to work properly.  For more information on PHP, please visit
-<http://www.php.net>.
+Directory Index requires PHP 5.3+ to work properly.  For more information on PHP, please visit <http://www.php.net>.
 
 
 Installation
@@ -34,8 +33,13 @@ Installation
   * Upload `index.php` to the folder you want listed. That's all!
   
   * For more settings:
-     * Edit .settings.php and change values in Setting class
-     * Upload `.settings.php` to the folder you want listed
+     * copy index.php or execute generate.php with the destination in argument and rename index.php.dist in index.php.
+        
+        ex:        
+        php genrate.php /var/www/mysite
+     
+     * Edit the new index.php and change values in Setting class
+     * Upload `index.php` to the folder you want listed.
 
 Troubleshooting
 ---------------

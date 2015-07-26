@@ -41,7 +41,6 @@ class Settings
              * @var array
              */
             'listing' => array(
-                'settings_file' => realpath(__FILE__),
                 /**
                  * @var bool
                  */

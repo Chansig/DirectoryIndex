@@ -1,0 +1,29 @@
+{
+    "name": "chansig/directoryindex",
+    "description": "PHP directory Index",
+    "keywords": [
+        "router",
+        "server",
+        "directory",
+        "index"
+    ],
+    "license": "MIT",
+    "homepage": "https://github.com/Chansig/DirectoryIndex",
+    "authors": [
+        {
+            "name": "Chansig",
+            "email": "chansig@chansig.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "autoload": {
+        "psr-4": {"Chansig\\DirectoryIndex\\": "src/DirectoryIndex"}
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.2.x-dev"
+        }
+    }
+}
