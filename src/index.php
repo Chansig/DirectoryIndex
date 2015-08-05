@@ -427,7 +427,7 @@ class Main
     static public function getUri()
     {
         $tmp = parse_url($_SERVER['REQUEST_URI']);
-        return $tmp['path'];
+        return str_replace('/'.basename($_SERVER['PHP_SELF']), '', $tmp['path']);
     }
     /**
      *
@@ -885,7 +885,7 @@ class Theme extends Configurable
         } else {
             $content .= '<td class="type">' . sprintf('<i class="fa %s"></i>', static::getIconType($file['type'], $file['extension'])) . '</td>';
         }
-        $content .= '<td class="name">' . sprintf('<a href="%s">%s</a>', $file['href'], $file['filename']) . '</td>';
+        $content .= '<td class="name">' . sprintf('<a href="%s">%s</a>', str_replace('/'.basename($_SERVER['PHP_SELF']), '', $file['href']), $file['filename']) . '</td>';
         if (!$isDir) {
             $content .= '<td class="size">' . sprintf('%s', static::getHumanFilesize($file['size'])) . '</td>';
         } else {
