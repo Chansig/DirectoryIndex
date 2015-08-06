@@ -43,6 +43,15 @@ class Main
     }
 
     /**
+     * @return mixed
+     */
+    static public function getDir()
+    {
+        $tmp = static::getUri();
+        return str_replace(basename(__FILE__), '',$tmp);
+    } 
+
+    /**
      *
      */
     static public function Exec()

@@ -81,7 +81,7 @@ class Listing extends Configurable
                 $infos['extension'] = $fileInfo->getExtension() === '' ? '' : ('.' . strtolower($fileInfo->getExtension()));
                 $infos['type'] = $fileInfo->getExtension() === '' ? '_void' : static::getExtensionType('.' . $fileInfo->getExtension());
                 $infos['description'] = static::getExtensionDescription('.' . $fileInfo->getExtension());
-                $infos['href'] = rtrim($_SERVER['SCRIPT_NAME'], '/') . '/' . $fileInfo->getFilename();
+                $infos['href'] = rtrim(str_replace(basename(__FILE__), '', $_SERVER['SCRIPT_NAME']), '/') . '/' . $fileInfo->getFilename();
             }
             static::$files[] = $infos;
         }
