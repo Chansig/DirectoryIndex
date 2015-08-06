@@ -54,7 +54,7 @@ class Theme extends Configurable
             'audio' => 'fa-music',
             'video' => 'fa-youtube-play',
             '3d' => 'fa-cube ',
-            'image' => 'fa-photo-o',
+            'image' => 'fa-photo',
             'vector' => 'fa-picture-o',
             'page' => 'fa-file-o',
             'page.pdf' => 'fa-file-pdf-o ',
@@ -94,7 +94,7 @@ class Theme extends Configurable
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>' . sprintf(Translation::trans('index_of'), Main::getUri()) . '</title>';
+        <title>' . sprintf(Translation::trans('index_of'), Main::getDir()) . '</title>';
         $content .= static::getStyle();
 
         $content .= '
@@ -170,7 +170,7 @@ class Theme extends Configurable
      */
     static function getTitle()
     {
-        return sprintf('<h1><a href="%s">%s</a></h1>', Main::getUri(), sprintf(Translation::trans('index_of'), Main::getUri()));
+        return sprintf('<h1><a href="%s">%s</a></h1>', Main::getDir(), sprintf(Translation::trans('index_of'), Main::getDir()));
     }
 
     /**
@@ -232,7 +232,7 @@ class Theme extends Configurable
 
     static protected function getMenuLink($sort, $type, $icon = '')
     {
-        $uri = Main::getUri();
+        $uri = Main::getDir();
         if ('' === $icon) {
             $icon = 'fa fa-sort';
         } else {
