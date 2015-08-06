@@ -9,7 +9,7 @@ namespace Chansig\DirectoryIndex;
 class Main
 {
 
-    const VERSION = '0.2';
+    const VERSION = '0.3.1';
 
     static protected $settings = array();
 
