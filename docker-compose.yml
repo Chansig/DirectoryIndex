@@ -1,0 +1,82 @@
+services:
+  qa:
+    image: directoryindex-qa:local
+    build:
+      context: .
+      dockerfile: .docker/php/Dockerfile
+      args:
+        PHP_IMAGE: "${PHP_IMAGE:-mirror.gcr.io/library/php:8.3-cli-bookworm@sha256:107f022053b2222ffd64f957c2a3b4c724c506301c84638e537f9027ed6468f5}"
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    environment:
+      COMPOSER_HOME: /tmp/composer
+      COMPOSER_CACHE_DIR: /app/.cache/composer
+      XDEBUG_MODE: "${XDEBUG_MODE:-coverage}"
+    volumes:
+      - .:/app
+
+  web:
+    image: directoryindex-web:local
+    build:
+      context: .
+      dockerfile: .docker/php/Dockerfile
+      args:
+        PHP_IMAGE: "${PHP_IMAGE:-mirror.gcr.io/library/php:8.3-cli-bookworm@sha256:107f022053b2222ffd64f957c2a3b4c724c506301c84638e537f9027ed6468f5}"
+    command:
+      - sh
+      - -ec
+      - |
+        cp -R /fixtures-source/. /srv/fixtures/
+        cp /opt/directory-index/index.php /srv/fixtures/index.php
+        find /srv/fixtures -exec touch -t 202601020304.05 {} +
+        ln -s /etc /srv/fixtures/outside-link
+        php -S 0.0.0.0:8080 -t /srv/fixtures
+    environment:
+      XDEBUG_MODE: "off"
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(@file_get_contents('http://127.0.0.1:8080/') === false ? 1 : 0);"]
+      interval: 1s
+      timeout: 2s
+      retries: 20
+    ports:
+      - "127.0.0.1:${E2E_WEB_PORT:-8080}:8080"
+    tmpfs:
+      - /srv/fixtures
+    volumes:
+      - ./tests/Fixtures/e2e:/fixtures-source:ro
+      - ./dist/index.php:/opt/directory-index/index.php:ro
+
+  apache:
+    image: directoryindex-apache:local
+    pull_policy: build
+    build:
+      context: .
+      dockerfile: .docker/apache/Dockerfile
+      args:
+        APACHE_IMAGE: "${APACHE_IMAGE:-mirror.gcr.io/library/php:8.3-apache-bookworm@sha256:73ec03963e2c1d20500a17326479f4d761843109c952aca44f89064924092d97}"
+    ports:
+      - "127.0.0.1:${E2E_APACHE_PORT:-8081}:80"
+
+  e2e:
+    image: mcr.microsoft.com/playwright:v1.61.1-noble@sha256:5b8f294aff9041b7191c34a4bab3ac270157a28774d4b0660e9743297b697e48
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    working_dir: /app/e2e
+    environment:
+      HOME: /tmp
+      npm_config_cache: /app/.cache/npm
+      PLAYWRIGHT_BASE_URL: http://web:8080
+    ipc: host
+    depends_on:
+      web:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:${E2E_UI_PORT:-9323}:9323"
+    volumes:
+      - .:/app
+
+  hadolint:
+    profiles: [tools]
+    image: ghcr.io/hadolint/hadolint:v2.14.0-debian@sha256:158cd0184dcaa18bd8ec20b61f4c1cabdf8b32a592d062f57bdcb8e4c1d312e2
+    entrypoint: [hadolint]
+    working_dir: /work
+    volumes:
+      - .:/work:ro

@@ -1,0 +1,3 @@
+ignored:
+  # The base images are immutable; pinning Debian snapshot package versions would prevent routine rebuilds.
+  - DL3008

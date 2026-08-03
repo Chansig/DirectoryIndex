@@ -1,1 +1,12 @@
-.idea
+/.idea/
+/.cache/
+/.phpunit.cache/
+/.phpunit.result.cache
+/.phpmd.result-cache.php
+/.php-cs-fixer.cache
+/build/
+/e2e/node_modules/
+/e2e/playwright-report/
+/e2e/test-results/
+/vendor/
+.DS_Store

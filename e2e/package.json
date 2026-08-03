@@ -1,0 +1,13 @@
+{
+  "name": "directory-index-e2e",
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "test:update": "playwright test --update-snapshots",
+    "test:ui": "playwright test --ui --ui-host=0.0.0.0 --ui-port=9323",
+    "report": "playwright show-report playwright-report --host=0.0.0.0 --port=9323"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.61.1"
+  }
+}

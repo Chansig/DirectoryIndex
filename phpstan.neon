@@ -1,0 +1,9 @@
+parameters:
+    level: max
+    paths:
+        - src
+        - tools
+        - tests
+    tmpDir: build/phpstan
+    reportUnmatchedIgnoredErrors: true
+    treatPhpDocTypesAsCertain: true

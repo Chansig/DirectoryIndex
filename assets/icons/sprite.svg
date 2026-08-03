@@ -1,0 +1,12 @@
+<svg aria-hidden="true" focusable="false" style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="icon-folder" viewBox="0 0 24 24"><path d="M3 7.5h7l2-2h9v13H3z"/></symbol>
+  <symbol id="icon-parent" viewBox="0 0 24 24"><path d="M4 18V7h16v11M8 11l4-4 4 4"/></symbol>
+  <symbol id="icon-file" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6zM14 3v5h5"/></symbol>
+  <symbol id="icon-document" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6zM9 12h6M9 16h6"/></symbol>
+  <symbol id="icon-image" viewBox="0 0 24 24"><path d="M4 5h16v14H4zM7 16l4-4 3 3 2-2 2 3M8 9h.01"/></symbol>
+  <symbol id="icon-archive" viewBox="0 0 24 24"><path d="M5 4h14v4H5zM6 8h12v12H6zM10 12h4"/></symbol>
+  <symbol id="icon-audio" viewBox="0 0 24 24"><path d="M9 18V6l9-2v12M9 18a3 2 0 1 1-3-2 3 2 0 0 1 3 2M18 16a3 2 0 1 1-3-2 3 2 0 0 1 3 2"/></symbol>
+  <symbol id="icon-video" viewBox="0 0 24 24"><path d="M4 5h16v14H4zM10 9l5 3-5 3z"/></symbol>
+  <symbol id="icon-sort-up" viewBox="0 0 24 24"><path d="M8 14l4-4 4 4"/></symbol>
+  <symbol id="icon-sort-down" viewBox="0 0 24 24"><path d="M8 10l4 4 4-4"/></symbol>
+</svg>

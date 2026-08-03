@@ -1,153 +1,57 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Chansig\DirectoryIndex;
 
-/**
- * Class Sorter
- * @package Chansig\DirectoryIndex
- */
-class Sorter extends Configurable
+final class Sorter
 {
-    static public $settings = array(
-        'param_name' => 'sort',
-        'default_sorter' => 'ascname',
-    );
-    /**
-     * @var array
-     */
-    static protected $sorters = array('ascname', 'descname', 'asctype', 'desctype', 'ascsize', 'descsize', 'ascmodified', 'descmodified');
+    /** @var list<string> */
+    public const KEYS = [
+        'ascname',
+        'descname',
+        'asctype',
+        'desctype',
+        'ascsize',
+        'descsize',
+        'ascmodified',
+        'descmodified',
+    ];
 
-    /**
-     * @param $files
-     */
-    static public function sort(&$files)
+    public function normalize(string $key): string
     {
-        uasort($files, array('Static', static::getSorterMethod()));
+        return in_array($key, self::KEYS, true) ? $key : 'ascname';
     }
 
     /**
-     * @return string
+     * @param list<Entry> $entries
+     * @return list<Entry>
      */
-    static public function getSorterMethod()
+    public function sort(array $entries, string $key): array
     {
-        $methods = array(
-            'asctype' => 'sortAscType',
-            'desctype' => 'sortDescType',
-            'ascsize' => 'sortAscSize',
-            'descsize' => 'sortDescSize',
-            'ascmodified' => 'sortAscModified',
-            'descmodified' => 'sortDescModified',
-            'ascname' => 'sortNameAsc',
-            'descname' => 'sortNameDesc',
-        );
+        $key = $this->normalize($key);
+        $descending = str_starts_with($key, 'desc');
+        $field = substr($key, $descending ? 4 : 3);
 
-        return $methods[static::getSortKey()];
-    }
+        usort($entries, static function (Entry $left, Entry $right) use ($descending, $field): int {
+            if ($left->directory !== $right->directory) {
+                return $left->directory ? -1 : 1;
+            }
 
-    /**
-     * @return string
-     */
-    static public function getSortKey()
-    {
-        if (isset($_GET) && isset($_GET[static::$settings['param_name']]) && in_array($_GET[static::$settings['param_name']], static::$sorters)) {
-            return $_GET[static::$settings['param_name']];
-        } else {
-            return static::$settings['default_sorter'];
-        }
-    }
+            $comparison = match ($field) {
+                'type' => strcasecmp($left->type(), $right->type()),
+                'size' => ($left->size ?? -1) <=> ($right->size ?? -1),
+                'modified' => $left->modifiedAt <=> $right->modifiedAt,
+                default => strnatcasecmp($left->name, $right->name),
+            };
 
-    /**
-     * @param $a
-     * @param $b
-     * @return int
-     */
-    static public function sortNameDesc($a, $b)
-    {
-        return static::sortNameAsc($b, $a);
-    }
+            if ($comparison === 0) {
+                $comparison = strnatcasecmp($left->name, $right->name);
+            }
 
-    /**
-     * @param $a
-     * @param $b
-     * @return int
-     */
-    static public function sortNameAsc($a, $b)
-    {
-        if ($a['filename'] === $b['filename']) {
-            return 0;
-        }
+            return $descending ? -$comparison : $comparison;
+        });
 
-        return ($a['filename'] < $b['filename']) ? -1 : 1;
-    }
-
-    /**
-     * @param $a
-     * @param $b
-     * @return int
-     */
-    static public function sortAscType($a, $b)
-    {
-        if ($a['type'] == $b['type']) {
-            return 0;
-        }
-
-        return ($a['type'] < $b['type']) ? -1 : 1;
-    }
-
-    /**
-     * @param $a
-     * @param $b
-     * @return int
-     */
-    static public function sortDescType($a, $b)
-    {
-        return static::sortAscType($b, $a);
-    }
-
-    /**
-     * @param $a
-     * @param $b
-     * @return int
-     */
-    static public function sortAscSize($a, $b)
-    {
-        if ($a['size'] == $b['size']) {
-            return 0;
-        }
-
-        return ($a['size'] < $b['size']) ? -1 : 1;
-    }
-
-    /**
-     * @param $a
-     * @param $b
-     * @return int
-     */
-    static public function sortDescSize($a, $b)
-    {
-        return static::sortAscSize($b, $a);
-    }
-
-    /**
-     * @param $a
-     * @param $b
-     * @return int
-     */
-    static public function sortAscModified($a, $b)
-    {
-        if ($a['mtime'] == $b['mtime']) {
-            return 0;
-        }
-        return ($a['mtime'] < $b['mtime']) ? -1 : 1;
-    }
-
-    /**
-     * @param $a
-     * @param $b
-     * @return int
-     */
-    static public function sortDescModified($a, $b)
-    {
-        return static::sortAscModified($b, $a);
+        return $entries;
     }
 }

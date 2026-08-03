@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<ruleset name="DirectoryIndex">
+    <description>DirectoryIndex coding standard.</description>
+    <file>src</file>
+    <file>tools</file>
+    <file>tests</file>
+    <arg name="basepath" value="."/>
+    <arg name="colors"/>
+    <arg name="extensions" value="php"/>
+    <arg value="sp"/>
+    <exclude-pattern>dist/*</exclude-pattern>
+    <exclude-pattern>tests/Fixtures/*</exclude-pattern>
+    <rule ref="PSR12"/>
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+    <rule ref="Generic.CodeAnalysis.UnusedFunctionParameter"/>
+    <rule ref="Generic.PHP.RequireStrictTypes"/>
+</ruleset>
